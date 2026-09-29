@@ -1,0 +1,90 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+  background-color: #121212;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Game Container */
+.container {
+  width: 960px;
+  height: 600px;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  display: flex;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+  position: relative;
+  overflow: hidden;
+}
+
+/* HUD Sidebar */
+.hud {
+  width: 280px;
+  padding: 30px;
+  background-color: #262626;
+  color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #333;
+}
+.gameTitle {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.stats p {
+  font-size: 20px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.controls {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* buttons */
+.btn {
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn.primary {
+  background-color: #299fff;
+  color: white;
+}
+.btn.primary:not(:disabled):hover {
+  background-color: #1976d2;
+}
+.btn.danger {
+  background-color: #f44336;
+  color: white;
+}
+.btn.danger:hover {
+  background-color: #d32f2f;
+}
+.btn.secondary {
+  background-color: #607d8b;
+  color: white;
+}
+.btn.secondary:hover {
+  background-color: #455a64;
+}
