@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virus Slayer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <aside class="hud">
+        <h1 class="gameTitle">Virus Slayer</h1>
+        <div class="stats">
+          <p>Time: <span id="timeDisplay">00:00</span></p>
+          <p>Score: <span id="scoreDisplay">0</span></p>
+          <p>Fail: <span id="failDisplay">0</span></p>
+          <p>Player: <span id="playerDisplay">Unknown</span></p>
+        </div>
+        <div class="controls">
+          <button id="btnRestartHud" class="btn secondary">Restart</button>
+          <button id="btnQuit" class="btn danger">Quit</button>
+        </div>
+      </aside>
+
+      <section class="gameBoard">
+        <!-- area deteksi tabrakan -->
+        <div class="dangerArea"></div>
+        <!-- border pemisah -->
+        <div class="borderLine"></div>
+
+        <!-- 4 jalur -->
+        <div class="lanesContainer">
+          <div class="lane" data-lane="0">
+            <div class="beam"></div>
+            <div class="keycap">D</div>
+          </div>
+          <div class="lane" data-lane="1">
+            <div class="beam"></div>
+            <div class="keycap">F</div>
+          </div>
+          <div class="lane" data-lane="2">
+            <div class="beam"></div>
+            <div class="keycap">J</div>
+          </div>
+          <div class="lane" data-lane="3">
+            <div class="beam"></div>
+            <div class="keycap">K</div>
+          </div>
+        </div>
+
+        <!-- tempat virus -->
+        <div id="virusContainer"></div>
+      </section>
+
+      <!-- overlays modal -->
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
