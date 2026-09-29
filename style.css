@@ -88,3 +88,45 @@ body {
 .btn.secondary:hover {
   background-color: #455a64;
 }
+
+/* Game Board */
+.gameBoard {
+  flex: 1;
+  position: relative;
+  background-color: #17181a;
+}
+/* 4 lanes container */
+.lanesContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.lane {
+  flex: 1;
+  border-right: 1px solid #333;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.lane:last-child {
+  border-right: none;
+}
+
+/* visual zone and borders */
+.dangerArea {
+  position: absolute;
+  bottom: 80px;
+  width: 100%;
+  height: 120px;
+  background-color: rgba(255, 0, 0, 0.15);
+  z-index: 1;
+}
+.borderLine {
+  position: absolute;
+  bottom: 80px;
+  width: 100%;
+  height: 2px;
+  background-color: #ffeb3b;
+  z-index: 2;
+  box-shadow: 0 0 10pc #ffebeb;
+}
