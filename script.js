@@ -227,5 +227,62 @@ function spawnVirus() {
 }
 
 // input hit detection
+function handleKeyDown(e) {
+  const key = e.key.toLowerCase();
+  // pause
+  if (key === "escape") {
+    togglePause();
+    return;
+  }
+  if (gameState !== "PLAYING") return;
+
+  const laneIndex = CONFIG.keys.indexOf(key);
+  if (laneIndex !== -1) {
+    DOM.lanes[laneIndex].classList.add("active");
+    checkHit(laneIndex);
+  }
+}
+function handleKeyUp(e) {
+  const key = e.key.toLowerCase();
+  const laneIndex = CONFIG.keys.indexOf(key);
+  if (laneIndex !== -1) {
+    DOM.lanes[laneIndex].classList.remove("active");
+  }
+}
+function checkHit(laneIndex) {
+  for (let i = 0; i < viruses.length; i++) {
+    let v = viruses[i];
+    if (v.lane === laneIndex) {
+      const virusBottomY = v.y + CONFIG.virusSize;
+      if (
+        virusBottomY >= CONFIG.dangerAreaTop &&
+        v.y <= CONFIG.dangeAreaBottom
+      ) {
+        score++;
+        removeVirusDOM(v.id);
+        viruses.splice(i, 1);
+        updateHUD();
+        break;
+      }
+    }
+  }
+}
+function removeVirusDOM(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
 
 // utilities
+function formatTime(totalSeconds) {
+  const m = Math.floor(totalSeconds / 60)
+    .toString()
+    .padStart(2, "0");
+  const s = (totalSeconds % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
+}
+function updateHUD() {
+  DOM.scoreDisplay.textContent = score;
+  DOM.failDisplay.textContent = fail;
+  DOM.timeDisplay.textContent = formatTime(timeElapsed);
+}
+window.onload = initEvents;
