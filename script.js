@@ -60,8 +60,58 @@ const DOM = {
 };
 
 // event listener inisialisasi
+function initEvents() {
+  // validasi username input
+  DOM.usernameInput.addEventListener("input", (e) => {
+    const val = e.target.value.trim();
+    DOM.btnPlay.disabled = val.length === 0;
+  });
+  // tombol navigasi modals
+  DOM.btnPlay.addEventListener("click", () => {
+    playerName = DOM.usernameInput.value.trim();
+    DOM.playerDisplay.textContent - playerName;
+    startCountdownSequence(startGameLoop);
+  });
+  DOM.btnContinue.addEventListener("click", () => {
+    startCountdownSequence(resumeGameLoop);
+  });
+  DOM.btnRestartHUD.addEventListener("click", resetGame);
+  DOM.btnRestartPause.addEventListener("click", resetGame);
+  DOM.btnRestartGameOver.addEventListener("click", resetGame);
+  DOM.btnQuit.addEventListener("click", () => location.reload());
+  // keyboard input (tuts vaksin & esc pause)
+  window.addEventListener("keydown", handleKeyDown);
+  window.addEventListener("keyup", handleKeyUp);
+}
 
 // controller modal
+function switchModal(modalName) {
+  DOM.overlay.classList.add("active");
+  Object.values(DOM.modals).forEach((m) => m.classList.remove("active"));
+  if (modalName && DOM.modals[modalName]) {
+    DOM.modals[modalName].classList.add("active");
+  } else {
+    DOM.overlay.classList.remove("active");
+  }
+}
+function startCountdownSequence(callback) {
+  gameState = "COUNTDOWN";
+  switchModal("countdown");
+  let count = 3;
+  DOM.countdownText.textContent = count;
+  const countInterval = setInterval(() => {
+    count--;
+    if (count > 0) {
+      DOM.countdownText.textContent = count;
+    } else if (count === 0) {
+      DOM.countdownText.textContent = "GO!";
+    } else {
+      clearInterval(countInterval);
+      switchModal(null);
+      callback();
+    }
+  }, 1000);
+}
 
 // game logic
 
