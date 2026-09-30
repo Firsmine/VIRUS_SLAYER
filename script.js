@@ -25,6 +25,39 @@ let spawnTimer = 0;
 let animationFrameId = null;
 
 // DOM elements
+const DOM = {
+  // hud
+  timeDisplay: document.getElementById("timeDisplay"),
+  scoreDisplay: document.getElementById("scoreDisplay"),
+  failDisplay: document.getElementById("failDisplay"),
+  playerDisplay: document.getElementById("playerDisplay"),
+  btnRestartHUD: document.getElementById("btnRestartHud"),
+  btnQuit: document.getElementById("btnQuit"),
+  // board
+  lanes: document.querySelectorAll(".lane"),
+  virusContainer: document.getElementById("virusContainer"),
+  // modal
+  overlay: document.getElementById("modalOverlay"),
+  modals: {
+    instruction: document.getElementById("modalInstruction"),
+    countdown: document.getElementById("modalCountdown"),
+    pause: document.getElementById("modalPause"),
+    gameover: document.getElementById("modalGameover"),
+  },
+  // instruction
+  usernameInput: document.getElementById("usernameInput"),
+  btnPlay: document.getElementById("btnPlay"),
+  // countdown
+  countdownText: document.getElementById("countdownText"),
+  // pause & gameover
+  btnContinue: document.getElementById("btnContinue"),
+  btnRestartPause: document.getElementById("btnRestartPause"),
+  btnRestartGameOver: document.getElementById("btnRestartGameover"),
+  // final stats
+  finalTime: document.getElementById("finalTime"),
+  finalScore: document.getElementById("finalScore"),
+  finalPlayer: document.getElementById("finalPlayer"),
+};
 
 // event listener inisialisasi
 
