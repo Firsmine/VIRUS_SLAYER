@@ -114,8 +114,117 @@ function startCountdownSequence(callback) {
 }
 
 // game logic
+function startGameLoop() {
+  gameState = "PLAYING";
+  lastFrameTime = performance.now();
+  // timer
+  if (!gameTimerInterval) {
+    gameTimerInterval = setInterval(() => {
+      if (gameState === "PLAYING") {
+        timeElapsed++;
+        updateHUD();
+      }
+    }, 1000);
+  }
+  animationFrameId = requestAnimationFrame(gameLoop);
+}
+function resumeGameLoop() {
+  gameState = "PLAYING";
+  lastFrameTime = performance.now();
+  animationFrameId = requestAnimationFrame(gameLoop);
+}
+function resetGame() {
+  gameState = "IDLE";
+  cancelAnimationFrame(animationFrameId);
+  clearInterval(gameTimerInterval);
+  gameTimerInterval = null;
+  score = 0;
+  fail = 0;
+  timeElapsed = 0;
+  spawnTimer = 0;
+  viruses = [];
+  DOM.virusContainer.innerHTML = "";
+  updateHUD();
+  startCountdownSequence(startGameLoop);
+}
+function togglePause() {
+  if (gameState === "PLAYING") {
+    gameState = "PAUSED";
+    switchModal("pause");
+  } else if (gameState === "PAUSED") {
+    startCountdownSequence(resumeGameLoop);
+  }
+}
+function triggerGameOver() {
+  gameState = "GAMEOVER";
+  clearInterval(gameTimerInterval);
+  gameTimerInterval = null;
+  DOM.finalPlayer.textContent = playerName;
+  DOM.finalTime.textContent = formatTime(timeElapsed);
+  DOM.finalScore.textContent = score;
+  switchModal("gameover");
+}
 
 // game loop
+function gameLoop(timestamp) {
+  if (gameState !== "PLAYING") return;
+  // kalkulasi deltatime
+  const deltaTime = (timestamp - lastFrameTime) / 1000;
+  lastFrameTime = timestamp;
+  updateEngine(deltaTime);
+  drawEngine;
+  if (gameState === "PLAYING") {
+    animationFrameId = requestAnimationFrame(gameLoop);
+  }
+}
+function updateEngine(deltaTime) {
+  // spawn virus setiap 1 detik
+  spawnTimer += deltaTime * 1000;
+  if (spawnTimer >= CONFIG.spawnInterval) {
+    spawnTimer = 0;
+    spawnVirus();
+  }
+  // pergerakan & deteksi fail
+  for (let i = viruses.length - 1; i >= 0; i--) {
+    let v = viruses[i];
+    v.y += CONFIG.baseSpeed * deltaTime;
+
+    if (v.y > CONFIG.dangeAreaBottom) {
+      fail++;
+      removeVirusDOM(v.id);
+      viruses.splice(i, 1);
+      updateHUD();
+      if (fail >= CONFIG.maxFail) {
+        triggerGameOver();
+        return;
+      }
+    }
+  }
+}
+function drawEngine() {
+  viruses.forEach((v) => {
+    const el = document.getElementById(v.id);
+    if (el) {
+      el.style.transform = `translateY(${v.y}px)`;
+    }
+  });
+}
+function spawnVirus() {
+  const laneIndex = Math.floor(Math.random() * 4);
+  const id = `virus-${virusIdCounter++}`;
+  // register data ke array
+  viruses.push({ id, lane: laneIndex, y: CONFIG.virusSpawnY });
+  // inject elemen ke DOM
+  const virusEl = document.createElement("div");
+  virusEl.className = "virus";
+  virusEl.id = id;
+  // hitung posisi horizontal (tiap lane menempati lebar 25%)
+  // offset sedikit ke tengah agar sejajar sempurna (Lane 25% = 240px -> offset 95px untuk virus 50px)
+  const laneWidth = 960 / 4 - 70;
+  virusEl.style.left = `${laneIndex * 240 + 240 / 2 - CONFIG.virusSize / 2}px`;
+  virusEl.style.transform = `translateY(${CONFIG.virusSpawnY}px)`;
+  DOM.virusContainer.appendChild(virusEl);
+}
 
 // input hit detection
 
