@@ -53,7 +53,7 @@
       </section>
 
       <!-- overlays modal -->
-      <div id="modalOverlay" class="modalOverlay">
+      <div id="modalOverlay" class="modalOverlay active">
         <!--Instruction Modal -->
         <div id="modalInstruction" class="modalContent active">
           <img src="assets/icon.png" alt="Game Icons" class="modalIcon" />
@@ -69,12 +69,12 @@
         </div>
 
         <!-- Countdown Modal -->
-        <div id="modalCountdown" class="modalContent hidden">
+        <div id="modalCountdown" class="modalContent">
           <h1 id="countdownText" class="countdownText">3</h1>
         </div>
 
         <!-- Pause Modal -->
-        <div id="modalPause" class="modalContent hidden">
+        <div id="modalPause" class="modalContent">
           <h2>Paused</h2>
           <div class="modalActions">
             <button id="btnContinue" class="btn primary">Continue</button>
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Game Over Modal -->
-        <div id="modalGameOver" class="modalContent hidden">
+        <div id="modalGameOver" class="modalContent">
           <h2>Game Over</h2>
           <div class="finalStats">
             <p>Time: <span id="finalTime">00:00</span></p>

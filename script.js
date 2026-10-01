@@ -2,7 +2,7 @@
 const CONFIG = {
   keys: ["d", "f", "j", "k"],
   dangerAreaTop: 400,
-  dangeAreaBottom: 520,
+  dangerAreaBottom: 520,
   virusSpawnY: -60,
   virusSize: 50,
   baseSpeed: 250, //pixel per detik
@@ -42,7 +42,7 @@ const DOM = {
     instruction: document.getElementById("modalInstruction"),
     countdown: document.getElementById("modalCountdown"),
     pause: document.getElementById("modalPause"),
-    gameover: document.getElementById("modalGameover"),
+    gameover: document.getElementById("modalGameOver"),
   },
   // instruction
   usernameInput: document.getElementById("usernameInput"),
@@ -52,7 +52,7 @@ const DOM = {
   // pause & gameover
   btnContinue: document.getElementById("btnContinue"),
   btnRestartPause: document.getElementById("btnRestartPause"),
-  btnRestartGameOver: document.getElementById("btnRestartGameover"),
+  btnRestartGameOver: document.getElementById("btnRestartGameOver"),
   // final stats
   finalTime: document.getElementById("finalTime"),
   finalScore: document.getElementById("finalScore"),
@@ -61,6 +61,11 @@ const DOM = {
 
 // event listener inisialisasi
 function initEvents() {
+  // instruction
+  document.getElementById("modalInstruction").classList.add("active");
+  if (document.activeElement === DOM.usernameInput) {
+    return;
+  }
   // validasi username input
   DOM.usernameInput.addEventListener("input", (e) => {
     const val = e.target.value.trim();
@@ -69,7 +74,8 @@ function initEvents() {
   // tombol navigasi modals
   DOM.btnPlay.addEventListener("click", () => {
     playerName = DOM.usernameInput.value.trim();
-    DOM.playerDisplay.textContent - playerName;
+    DOM.playerDisplay.textContent = playerName;
+    DOM.overlay.classList.remove("active");
     startCountdownSequence(startGameLoop);
   });
   DOM.btnContinue.addEventListener("click", () => {
@@ -169,10 +175,10 @@ function triggerGameOver() {
 function gameLoop(timestamp) {
   if (gameState !== "PLAYING") return;
   // kalkulasi deltatime
-  const deltaTime = (timestamp - lastFrameTime) / 1000;
+  const deltaTime = Math.min((timestamp - lastFrameTime) / 1000, 0.1);
   lastFrameTime = timestamp;
   updateEngine(deltaTime);
-  drawEngine;
+  drawEngine();
   if (gameState === "PLAYING") {
     animationFrameId = requestAnimationFrame(gameLoop);
   }
@@ -189,7 +195,7 @@ function updateEngine(deltaTime) {
     let v = viruses[i];
     v.y += CONFIG.baseSpeed * deltaTime;
 
-    if (v.y > CONFIG.dangeAreaBottom) {
+    if (v.y > CONFIG.dangerAreaBottom) {
       fail++;
       removeVirusDOM(v.id);
       viruses.splice(i, 1);
@@ -220,8 +226,8 @@ function spawnVirus() {
   virusEl.id = id;
   // hitung posisi horizontal (tiap lane menempati lebar 25%)
   // offset sedikit ke tengah agar sejajar sempurna (Lane 25% = 240px -> offset 95px untuk virus 50px)
-  const laneWidth = 960 / 4 - 70;
-  virusEl.style.left = `${laneIndex * 240 + 240 / 2 - CONFIG.virusSize / 2}px`;
+  const laneWidth = 170;
+  virusEl.style.left = `${laneIndex * laneWidth + 60}px`;
   virusEl.style.transform = `translateY(${CONFIG.virusSpawnY}px)`;
   DOM.virusContainer.appendChild(virusEl);
 }
@@ -250,13 +256,14 @@ function handleKeyUp(e) {
   }
 }
 function checkHit(laneIndex) {
+  console.log("check");
   for (let i = 0; i < viruses.length; i++) {
     let v = viruses[i];
     if (v.lane === laneIndex) {
       const virusBottomY = v.y + CONFIG.virusSize;
       if (
         virusBottomY >= CONFIG.dangerAreaTop &&
-        v.y <= CONFIG.dangeAreaBottom
+        v.y <= CONFIG.dangerAreaBottom
       ) {
         score++;
         removeVirusDOM(v.id);
@@ -268,8 +275,11 @@ function checkHit(laneIndex) {
   }
 }
 function removeVirusDOM(id) {
+  console.log("h");
   const el = document.getElementById(id);
-  if (el) el.remove();
+  if (el) {
+    el.remove();
+  }
 }
 
 // utilities
